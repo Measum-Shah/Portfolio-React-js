@@ -11,14 +11,14 @@ import PropTypes from "prop-types"
 
 
 const ButtonPrimary = ({
-    href,target='_self', label,icon,classes 
+    href,target='_self', label,icon,classes,download
 }) => {
 
 if(href){
     return (
     <a 
     href={href} target={target} className={"btn-primary btn " + classes}>
-        {label}
+        {label} 
 
         {icon ?
         <span className="material-symbol-rounded" aria-hidden="true">
@@ -30,7 +30,7 @@ if(href){
 }
 else{
     return(
-        <button className={"btn-primary btn " + classes}>
+        <button className={"btn-primary btn " + classes} download={download} href={href}>
             {label}
             
         {icon ?
@@ -50,6 +50,8 @@ ButtonPrimary.PropTypes={
     href:PropTypes.string,
     target:PropTypes.string,
     icon:PropTypes.string,
+    download:PropTypes.string,
+    href: PropTypes.string,
     classes:PropTypes.string    
 }
 // ----------------------------Outline Button--------------------------------

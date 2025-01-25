@@ -14,7 +14,8 @@ body{
 
 /* Typography */
 
-.headline-1{
+.headline-1,
+.headline-2{
     @apply max-w-max;
     background: -webkit-linear-gradient(0deg,#fafafa, #a1a1aa);
     -webkit-background-clip: text;
@@ -24,6 +25,13 @@ body{
 .headline-1{
     @apply text-5xl leading-tight font-semibold lg:text-[55px] lg:leading-[1.15]
 }
+
+.headline-2{
+    @apply text-3xl lg:text-4xl lg:leading-tight font-semibold
+}
+ .title-1{
+    @apply text-[22px] font-normal 
+ }
 
 
 /* utilities */
@@ -44,6 +52,10 @@ body{
 }
 .img-cover{
     @apply w-full h-full object-cover
+}
+
+.section{
+    @apply pt-20 lg:pt-32
 }
 
 
@@ -106,4 +118,21 @@ body{
 .btn-primary{
     @apply h-11 bg-blue-400 text-zinc-950 hover:bg-blue-300
     active:bg-blue-400
+}
+
+
+/* Text Field */
+
+.label{
+@apply block text-zinc-200 text-sm font-normal mb-2
+}
+
+.text-field{
+@apply block outline-none w-full px-3 py-3 text-sm bg-zinc-800 rounded-xl ring-1 ring-inset ring-transparent 
+transition-shadow hover:ring-zinc-50/5 focus:ring-sky-400
+focus:ring-2
+}
+
+.text-field::placeholder{
+    @apply text-zinc-400 
 }
