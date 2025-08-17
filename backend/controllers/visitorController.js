@@ -16,15 +16,11 @@ export const logVisitor = async (req, res) => {
 
     // ✅ Referrer + LinkedIn detection
     const referrer = req.headers.referer || null;
-    let linkedinUsername = null;
+    let linkedinUsername = req.query.linkedin || null;
 
-    try {
-      const urlParams = new URL(req.url, `http://${req.headers.host}`).searchParams;
-      linkedinUsername =
-        urlParams.get('linkedin') || // if shared as ?linkedin=username
-        (referrer?.includes('linkedin.com/in/') ? extractLinkedInUsername(referrer) : null);
-    } catch (e) {
-      linkedinUsername = null;
+    // If no query param, try extracting from referrer
+    if (!linkedinUsername && referrer?.includes('linkedin.com/in/')) {
+      linkedinUsername = extractLinkedInUsername(referrer);
     }
 
     // ✅ Device detection
