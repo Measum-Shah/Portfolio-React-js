@@ -2,36 +2,36 @@ import Visitor from '../models/visitorModel.js';
 
 export const logVisitor = async (req, res) => {
   try {
-    // Get client IP safely (works behind proxies)
+    // ✅ Get client IP safely (works behind proxies like Render/Netlify)
     const ip =
       req.headers['x-forwarded-for']?.split(',')[0] ||
       req.connection?.remoteAddress ||
       req.socket?.remoteAddress ||
       req.ip;
 
-    // Anonymize IP (store only first 3 octets for privacy)
+    // ✅ Anonymize IP (store only first 3 octets for privacy)
     const anonymizedIp = ip?.includes('.')
       ? ip.split('.').slice(0, 3).join('.') + '.0'
       : ip;
 
-    // Referrer + LinkedIn detection
+    // ✅ Referrer + LinkedIn detection
     const referrer = req.headers.referer || null;
     let linkedinUsername = null;
 
     try {
       const urlParams = new URL(req.url, `http://${req.headers.host}`).searchParams;
       linkedinUsername =
-        urlParams.get('linkedin') ||
-        (referrer?.includes('linkedin.com') ? extractLinkedInUsername(referrer) : null);
+        urlParams.get('linkedin') || // if shared as ?linkedin=username
+        (referrer?.includes('linkedin.com/in/') ? extractLinkedInUsername(referrer) : null);
     } catch (e) {
       linkedinUsername = null;
     }
 
-    // Device detection
+    // ✅ Device detection
     const userAgent = req.headers['user-agent'] || "Unknown";
     const isMobile = /mobile/i.test(userAgent);
 
-    // Update or create visitor record
+    // ✅ Update or create visitor record
     await Visitor.findOneAndUpdate(
       { ip: anonymizedIp },
       {
@@ -55,7 +55,7 @@ export const logVisitor = async (req, res) => {
   }
 };
 
-// Get all visitors for dashboard
+// ✅ Get all visitors for dashboard
 export const getVisitors = async (req, res) => {
   try {
     const visitors = await Visitor.find().sort({ lastVisit: -1 });
@@ -65,7 +65,7 @@ export const getVisitors = async (req, res) => {
   }
 };
 
-// Get visitor stats
+// ✅ Get visitor stats (totals for dashboard cards)
 export const getVisitorStats = async (req, res) => {
   try {
     const stats = await Visitor.aggregate([
@@ -90,7 +90,7 @@ export const getVisitorStats = async (req, res) => {
   }
 };
 
-// Helper function
+// ✅ Helper function for extracting LinkedIn username
 function extractLinkedInUsername(url) {
   const match = url.match(/linkedin\.com\/in\/([^\/?]+)/);
   return match ? match[1] : null;
